@@ -57,7 +57,7 @@ int main()
     unsigned int floorTexture = loadTexture("../src/tex/wall.jpg");
 
     glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_ALWAYS);
+    glDepthFunc(GL_LESS);
 
     while(!glfwWindowShouldClose(window)){
         processInput(window);
