@@ -26,5 +26,6 @@
         "typeinfo": "cpp",
         "fstream": "cpp",
         "sstream": "cpp"
-    }
+    },
+    "C_Cpp.errorSquiggles": "Enabled"
 }

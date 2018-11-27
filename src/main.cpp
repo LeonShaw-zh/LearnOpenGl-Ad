@@ -35,6 +35,8 @@ unsigned int loadTexture(const char* path);
 unsigned int makeCube();
 unsigned int makePlane();
 unsigned int makeLight();
+glm::mat4 myperspective(float fov, float W_H_rate, float n, float f);
+#define pi 3.1415926
 
 int main()
 {
@@ -68,7 +70,8 @@ int main()
         // 生成观察矩阵和投影矩阵
         glm::mat4 model = glm::mat4(1.0f);
         glm::mat4 view = camera.GetViewMatrix();
-        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)screenWidth / screenHeight, 0.1f, 100.0f);
+        glm::mat4 projection = myperspective(camera.Zoom, (float)screenWidth / screenHeight, 0.1f, 100.0f);
+        //glm::perspective(glm::radians(camera.Zoom), (float)screenWidth / screenHeight, 0.1f, 100.0f);
         shader.use();
         shader.setMat4("view", view);
         shader.setMat4("projection", projection);
@@ -305,4 +308,18 @@ unsigned int makePlane(){
 
 unsigned int makeLight(){
     return makeCube();
+}
+
+glm::mat4 myperspective(float fov, float W_H_rate, float n, float f){
+    float radi = pi / 180.0 * fov;
+    float cotV = 1.0 / tan(radi/2);
+    float h_near = n / sqrtf((powf(cotV, 2) - powf(W_H_rate, 2)));
+    float w_near = h_near * W_H_rate;
+    glm::mat4 projection = glm::mat4(0.0f);
+    projection[0][0] = n / w_near;
+    projection[1][1] = n / h_near;
+    projection[2][2] = -1 * (f + n) / (f - n);
+    projection[3][2] = -2 * f * n / (f - n);
+    projection[2][3] = -1;
+    return projection;
 }
